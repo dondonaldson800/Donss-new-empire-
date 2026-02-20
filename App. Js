@@ -1,0 +1,71 @@
+cd ~/Empire-V2 && \
+npm install react-native-google-mobile-ads && \
+cat <<EOF > app.json
+{
+  "expo": {
+    "name": "Don's Empire",
+    "slug": "dons-empire",
+    "version": "1.0.0",
+    "android": {
+      "package": "com.dons.empire",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-3940256099942544~3347511713"
+      }
+    },
+    "plugins": [
+      "react-native-google-mobile-ads"
+    ]
+  }
+}
+EOF
+cat <<EOF > App.js
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.goldTitle}>DON'S EMPIRE</Text>
+        <Text style={styles.statusText}>● SYSTEMS ACTIVE</Text>
+      </View>
+
+      <ScrollView contentContainerStyle={styles.dashboard}>
+        <View style={styles.statBox}>
+          <Text style={styles.statLabel}>REVENUE GENERATED</Text>
+          <Text style={styles.statValue}>$0.00</Text>
+        </View>
+
+        <TouchableOpacity style={styles.actionButton}>
+          <Text style={styles.buttonText}>VERIFY GALAXY SYNC</Text>
+        </TouchableOpacity>
+      </ScrollView>
+
+      {/* REAL GOOGLE AD BANNER */}
+      <View style={styles.adSpace}>
+        <BannerAd
+          unitId={TestIds.BANNER}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{ requestNonPersonalizedAdsOnly: true }}
+        />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#000' },
+  header: { marginTop: 60, alignItems: 'center', paddingBottom: 20 },
+  goldTitle: { color: '#FFD700', fontSize: 38, fontWeight: 'bold' },
+  statusText: { color: '#00FF00', fontSize: 12, marginTop: 5 },
+  dashboard: { alignItems: 'center', paddingTop: 40, width: '100%' },
+  statBox: { width: '85%', height: 100, backgroundColor: '#111', borderRadius: 15, borderWidth: 1, borderColor: '#FFD700', justifyContent: 'center', alignItems: 'center', marginBottom: 30 },
+  statLabel: { color: '#888', fontSize: 12 },
+  statValue: { color: '#FFD700', fontSize: 36, fontWeight: 'bold' },
+  actionButton: { width: '85%', backgroundColor: '#FFD700', padding: 20, borderRadius: 10, alignItems: 'center', marginBottom: 15 },
+  buttonText: { color: '#000', fontWeight: 'bold', fontSize: 18 },
+  adSpace: { position: 'absolute', bottom: 0, width: '100%', alignItems: 'center' }
+});
+EOF
+
